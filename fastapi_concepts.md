@@ -104,6 +104,10 @@ Frontend React Component
 ---
 
 ## Architecture Patterns
+> **Recommended Watch:**
+> - [Microservices vs Monolith Architecture](https://youtu.be/rv4LlmLmVWk?si=NiRKipzJMMEtxHYU)
+> - [Monolithic vs Microservices Architecture Explained](https://youtu.be/NdeTGlZ__Do?si=-OsdD60Z53Y08aKB)
+
 
 ### What is Software Architecture?
 

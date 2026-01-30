@@ -31,6 +31,10 @@ TaskFlow is a modern, full-stack Task Management application designed to help us
 - **Database**: PostgreSQL (via SQLModel / SQLAlchemy)
 - **Authentication**: OAuth2 with Password + Bearer (JWT)
 
+### 📚 Recommended Learning Resources
+- [Microservices vs Monolith Architecture](https://youtu.be/rv4LlmLmVWk?si=NiRKipzJMMEtxHYU)
+- [Monolithic vs Microservices Architecture Explained](https://youtu.be/NdeTGlZ__Do?si=-OsdD60Z53Y08aKB)
+
 This project follows a **Layered Architecture** to maintain a clean separation of concerns while keeping the codebase simple and manageable.
 
 1.  **Presentation Layer (`api/`)**: Handles HTTP requests and responses (Routers).
