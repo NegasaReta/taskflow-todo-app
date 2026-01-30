@@ -82,8 +82,9 @@ export function AppSidebar({ onCreateTask }: AppSidebarProps) {
   };
 
   const handleSettingsClick = () => {
-    toast.info('Settings page coming soon!', {
-      description: 'This feature will be available in a future update.',
+    navigate('/settings');
+    toast.info('Settings', {
+      description: 'Settings page is a placeholder for now.',
     });
   };
 
