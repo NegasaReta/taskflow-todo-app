@@ -83,9 +83,6 @@ export function AppSidebar({ onCreateTask }: AppSidebarProps) {
 
   const handleSettingsClick = () => {
     navigate('/settings');
-    toast.info('Settings', {
-      description: 'Settings page is a placeholder for now.',
-    });
   };
 
   const handleLogout = () => {
