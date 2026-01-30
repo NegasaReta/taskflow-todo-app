@@ -15,7 +15,7 @@ import { CheckSquare, Loader2, AlertCircle, Mail, Lock, User } from 'lucide-reac
 
 export default function Register() {
   const navigate = useNavigate();
-  const { register, isLoading, error, clearError } = useAuth();
+  const { register, loginDemo, isLoading, error, clearError } = useAuth();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -80,6 +80,11 @@ export default function Register() {
     if (validationErrors[name]) {
       setValidationErrors(prev => ({ ...prev, [name]: '' }));
     }
+  };
+
+  const handleDemoLogin = () => {
+    loginDemo();
+    navigate('/dashboard');
   };
 
   return (
@@ -209,6 +214,16 @@ export default function Register() {
                 ) : (
                   'Create account'
                 )}
+              </Button>
+
+              {/* Demo Button */}
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={handleDemoLogin}
+              >
+                Try Demo (No Registration)
               </Button>
 
               <p className="text-sm text-center text-muted-foreground">
