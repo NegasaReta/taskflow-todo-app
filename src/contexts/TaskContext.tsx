@@ -411,7 +411,18 @@ export function TaskProvider({ children }: TaskProviderProps) {
   }, []);
 
   const setSelectedCategory = useCallback((category: string | null) => {
-    setState(prev => ({ ...prev, selectedCategory: category, viewMode: category ? 'category' : 'all' }));
+    setState(prev => {
+      // If selecting a category, switch into category view.
+      if (category) {
+        return { ...prev, selectedCategory: category, viewMode: 'category' };
+      }
+
+      // If clearing the category:
+      // - when currently in category view, fall back to "all"
+      // - otherwise, keep the current view mode (pending/completed/all)
+      const nextViewMode: ViewMode = prev.viewMode === 'category' ? 'all' : prev.viewMode;
+      return { ...prev, selectedCategory: null, viewMode: nextViewMode };
+    });
   }, []);
 
   const setSearchQuery = useCallback((query: string) => {
