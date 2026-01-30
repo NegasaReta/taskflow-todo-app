@@ -1,73 +1,109 @@
-# Welcome to your Lovable project
+# TaskFlow - To-Do App
 
-## Project info
+TaskFlow is a modern, full-stack Task Management application designed to help users organize their daily activities efficiently. This project serves as a practical implementation for learning **FastAPI** backend integration with a **React** frontend.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 🚀 Features
 
-## How can I edit this code?
+- **User Authentication**: Secure Login and Registration (JWT-based).
+- **Task Management**:
+  - Create, Read, Update, and Delete (CRUD) tasks.
+  - Mark tasks as granularly completed or pending.
+- **Filtering & Search**:
+  - Filter tasks by status (Completed/Pending).
+  - Search tasks by title or description.
+  - Sort by priority or due date.
+- **Modern UI**: Built with Shadcn UI and Tailwind CSS for a sleek, responsive design.
 
-There are several ways of editing your application.
+## 🛠️ Tech Stack
 
-**Use Lovable**
+### Frontend
+- **Framework**: [React](https://react.dev/) with [Vite](https://vitejs.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **State Management**: [TanStack Query (React Query)](https://tanstack.com/query/latest)
+- **Forms**: React Hook Form + Zod
+- **Routing**: React Router DOM
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### Backend (Intended Architecture)
+- **Architecture Style**: Layered (Clean-ish) Monolith
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) (Python)
+- **Database**: SQLModel / SQLAlchemy
+- **Authentication**: OAuth2 with Password + Bearer (JWT)
 
-Changes made via Lovable will be committed automatically to this repo.
+This project follows a **Layered Architecture** to maintain a clean separation of concerns while keeping the codebase simple and manageable.
 
-**Use your preferred IDE**
+1.  **Presentation Layer (`api/`)**: Handles HTTP requests and responses (Routers).
+2.  **Business Logic Layer (`services/`)**: Contains the core business logic, decoupled from the API and DB calls.
+3.  **Data Access Layer (`crud/` or repositories)**: Direct database interactions.
+4.  **Domain Layer (`models/` & `schemas/`)**: Defines the data structures (SQLModel entities and Pydantic schemas).
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 📂 Project Structure
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+taskflow-todo-app/
+├── src/                 # Frontend (React)
+│   ├── ...
+│
+└── backend/             # Backend (FastAPI) [Intended Structure]
+    ├── app/
+    │   ├── api/         # API Routes (v1/endpoints)
+    │   ├── core/        # Config, Security, middleware
+    │   ├── crud/        # Database CRUD operations
+    │   ├── models/      # SQLModel database tables
+    │   ├── schemas/     # Pydantic models for Req/Res
+    │   ├── services/    # Complex business logic
+    │   ├── db/          # Database connection/session
+    │   └── main.py      # Application entry point
+    └── requirements.txt
 ```
 
-**Edit a file directly in GitHub**
+## 🚦 Getting Started
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Prerequisites
 
-**Use GitHub Codespaces**
+- **Node.js**: v18 or higher
+- **Python**: 3.10 or higher (for the backend)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Frontend Setup
 
-## What technologies are used for this project?
+1. **Clone the repository** (if you haven't already):
+   ```bash
+   git clone <repository-url>
+   cd taskflow-todo-app
+   ```
 
-This project is built with:
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+3. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+   The frontend will be available at `http://localhost:5173`.
 
-## How can I deploy this project?
+### Backend Configuration
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+The frontend is configured to communicate with a backend API at `http://localhost:8000/api/v1` by default. You can customize this by setting the `VITE_API_URL` environment variable.
 
-## Can I connect a custom domain to my Lovable project?
+#### Expected API Endpoints
 
-Yes, you can!
+The backend should implement the following endpoints to work with the frontend:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- **Auth**:
+  - `POST /auth/register`: Register a new user
+  - `POST /auth/login`: Login and retrieve token
+  - `GET /auth/me`: Get current user profile
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- **Tasks**:
+  - `GET /tasks`: List all tasks (supports filters: status, priority, search)
+  - `POST /tasks`: Create a new task
+  - `GET /tasks/{id}`: Get a specific task
+  - `PUT /tasks/{id}`: Update a task
+  - `DELETE /tasks/{id}`: Delete a task
+
+## 🤝 Contributing
+
+This project is for educational purposes. Feel free to fork it and experiment with adding new features!
