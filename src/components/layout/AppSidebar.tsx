@@ -35,6 +35,7 @@ import {
   User,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 // Navigation items for main views
 const mainNavItems = [
@@ -78,6 +79,12 @@ export function AppSidebar({ onCreateTask }: AppSidebarProps) {
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
+  };
+
+  const handleSettingsClick = () => {
+    toast.info('Settings page coming soon!', {
+      description: 'This feature will be available in a future update.',
+    });
   };
 
   const handleLogout = () => {
@@ -203,6 +210,7 @@ export function AppSidebar({ onCreateTask }: AppSidebarProps) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
+              onClick={handleSettingsClick}
               tooltip={collapsed ? 'Settings' : undefined}
               className="text-sidebar-foreground hover:bg-sidebar-accent/50"
             >

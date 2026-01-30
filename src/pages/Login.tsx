@@ -15,7 +15,7 @@ import { CheckSquare, Loader2, AlertCircle, Mail, Lock } from 'lucide-react';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, isLoading, error, clearError } = useAuth();
+  const { login, loginDemo, isLoading, error, clearError } = useAuth();
   
   const [formData, setFormData] = useState({
     email: '',
@@ -67,6 +67,7 @@ export default function Login() {
 
   // Demo login for development
   const handleDemoLogin = () => {
+    loginDemo();
     navigate('/dashboard');
   };
 

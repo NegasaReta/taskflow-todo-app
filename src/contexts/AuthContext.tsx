@@ -1,11 +1,28 @@
 /**
  * Authentication Context Provider.
  * Manages user authentication state and provides auth methods.
+ * Uses mock auth for development when USE_MOCK_AUTH is true.
  */
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { User, AuthCredentials, RegisterCredentials, ApiError } from '@/types';
 import { authApi, setToken, getToken, removeToken } from '@/services/api';
+
+// ============================================
+// Configuration
+// ============================================
+
+// Flag to use mock auth (set to false when backend is connected)
+const USE_MOCK_AUTH = true;
+
+// Mock user for development
+const MOCK_USER: User = {
+  id: 'demo-user-1',
+  email: 'demo@taskflow.com',
+  name: 'Demo User',
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+};
 
 // ============================================
 // Types
@@ -21,6 +38,7 @@ interface AuthState {
 interface AuthContextValue extends AuthState {
   login: (credentials: AuthCredentials) => Promise<void>;
   register: (credentials: RegisterCredentials) => Promise<void>;
+  loginDemo: () => void;
   logout: () => void;
   clearError: () => void;
 }
@@ -50,8 +68,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Check for existing token on mount
   useEffect(() => {
     const initAuth = async () => {
+      // Check for demo mode first
+      const isDemoMode = localStorage.getItem('taskflow_demo_mode') === 'true';
+      if (isDemoMode) {
+        setState({
+          user: MOCK_USER,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        });
+        return;
+      }
+
       const token = getToken();
-      if (token) {
+      if (token && !USE_MOCK_AUTH) {
         try {
           // Validate token by fetching user profile
           const { user } = await authApi.getProfile();
@@ -82,6 +112,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Listen for token expiration events from API
   useEffect(() => {
     const handleAuthExpired = () => {
+      localStorage.removeItem('taskflow_demo_mode');
       setState({
         user: null,
         isAuthenticated: false,
@@ -98,14 +129,36 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     
     try {
-      const response = await authApi.login(credentials);
-      setToken(response.access_token);
-      setState({
-        user: response.user,
-        isAuthenticated: true,
-        isLoading: false,
-        error: null,
-      });
+      if (USE_MOCK_AUTH) {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+        // Simple validation for mock mode
+        if (credentials.email && credentials.password.length >= 6) {
+          const mockUser: User = {
+            ...MOCK_USER,
+            email: credentials.email,
+            name: credentials.email.split('@')[0],
+          };
+          localStorage.setItem('taskflow_demo_mode', 'true');
+          setState({
+            user: mockUser,
+            isAuthenticated: true,
+            isLoading: false,
+            error: null,
+          });
+        } else {
+          throw { message: 'Invalid credentials', status_code: 401 } as ApiError;
+        }
+      } else {
+        const response = await authApi.login(credentials);
+        setToken(response.access_token);
+        setState({
+          user: response.user,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        });
+      }
     } catch (error) {
       const apiError = error as ApiError;
       setState(prev => ({
@@ -121,14 +174,34 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
     
     try {
-      const response = await authApi.register(credentials);
-      setToken(response.access_token);
-      setState({
-        user: response.user,
-        isAuthenticated: true,
-        isLoading: false,
-        error: null,
-      });
+      if (USE_MOCK_AUTH) {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+        // Create mock user from registration data
+        const mockUser: User = {
+          id: `user-${Date.now()}`,
+          email: credentials.email,
+          name: credentials.name,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        localStorage.setItem('taskflow_demo_mode', 'true');
+        setState({
+          user: mockUser,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        });
+      } else {
+        const response = await authApi.register(credentials);
+        setToken(response.access_token);
+        setState({
+          user: response.user,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        });
+      }
     } catch (error) {
       const apiError = error as ApiError;
       setState(prev => ({
@@ -140,8 +213,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
+  const loginDemo = useCallback(() => {
+    localStorage.setItem('taskflow_demo_mode', 'true');
+    setState({
+      user: MOCK_USER,
+      isAuthenticated: true,
+      isLoading: false,
+      error: null,
+    });
+  }, []);
+
   const logout = useCallback(() => {
     removeToken();
+    localStorage.removeItem('taskflow_demo_mode');
     setState({
       user: null,
       isAuthenticated: false,
@@ -158,6 +242,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     ...state,
     login,
     register,
+    loginDemo,
     logout,
     clearError,
   };
