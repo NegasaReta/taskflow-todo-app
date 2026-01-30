@@ -5,6 +5,7 @@
 
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useTheme } from 'next-themes';
 import {
   CheckSquare,
   ArrowRight,
@@ -15,6 +16,8 @@ import {
   Zap,
   Shield,
   Smartphone,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 const features = [
@@ -51,6 +54,12 @@ const features = [
 ];
 
 export default function Index() {
+  const { theme, setTheme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
@@ -64,6 +73,13 @@ export default function Index() {
               <span className="text-xl font-semibold">TaskFlow</span>
             </div>
             <div className="flex items-center gap-3">
+              <Button variant="ghost" size="icon" onClick={toggleTheme}>
+                {theme === 'dark' ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </Button>
               <Button variant="ghost" asChild>
                 <Link to="/login">Sign In</Link>
               </Button>
