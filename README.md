@@ -28,7 +28,7 @@ TaskFlow is a modern, full-stack Task Management application designed to help us
 ### Backend (Intended Architecture)
 - **Architecture Style**: Layered (Clean-ish) Monolith
 - **Framework**: [FastAPI](https://fastapi.tiangolo.com/) (Python)
-- **Database**: SQLModel / SQLAlchemy
+- **Database**: PostgreSQL (via SQLModel / SQLAlchemy)
 - **Authentication**: OAuth2 with Password + Bearer (JWT)
 
 This project follows a **Layered Architecture** to maintain a clean separation of concerns while keeping the codebase simple and manageable.

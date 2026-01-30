@@ -24,12 +24,13 @@ This roadmap is designed to guide you from a complete beginner to building a pro
     - Create a `POST /tasks/` endpoint that accepts `TaskCreate` and returns `TaskResponse`.
     - FastAPI will automatically validate the JSON body against your Pydantic model.
 
-## Phase 3: Database Integration (SQLModel)
-**Goal:** Persist data using a real database (SQLite for development).
+## Phase 3: Database Integration (SQLModel + PostgreSQL)
+**Goal:** Persist data using a real database (PostgreSQL).
 
 - [ ] **Step 3.1: Database Setup**
-    - Install `sqlmodel`.
-    - Create `database.py` to handle the `engine` and `Session`.
+    - Install `psycopg2-binary` and `sqlmodel`.
+    - Set up a local PostgreSQL database (or use Docker).
+    - Create `database.py` to handle the `engine` and `Session` connecting to Postgres.
 - [ ] **Step 3.2: Create Database Models**
     - Create `models.py`.
     - Define a `Task` class inheriting from `SQLModel, table=True`.
@@ -80,7 +81,7 @@ This roadmap is designed to guide you from a complete beginner to building a pro
     - Configure `CORSMiddleware` in `main.py` to allow requests from `localhost:5173`.
 - [ ] **Step 7.2: Integration Testing**
     - Run both servers.
-    - Verify that the React app shows the tasks from your SQLite database.
+    - Verify that the React app shows the tasks from your PostgreSQL database.
 
 ## Recommended Resources
 - [FastAPI Official Tutorial](https://fastapi.tiangolo.com/tutorial/) (The best source!)
